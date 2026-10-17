@@ -39,7 +39,26 @@
 
 - Системный Node = v20.18 — не соответствует `engines: >=22.12`. Использовать
   nvm Node 22.15.1.
-- `npm audit`: 2 moderate — предсуществующие в исходнике, не внесены миграцией.
+- `npm audit`: 2 moderate — предсуществующие в исходнике, не внесены миграцией
+  (закрыты апгрейдом react-router до v7.18.4, см. «Доводка»).
 - chunk-size warning (737 kB) у сборки — косметика, из исходника.
 - В `vitest` stderr шумит ошибка `vaul` (`getTranslate`) на happy-dom — тесты
   при этом проходят (549/549).
+
+## Доводка после миграции (2026-10-17)
+
+Ревью выявило: фронтенд админки завершён, всё нереализованное — бэкенд
+(BE-1…BE-8, BE-13, ADM-17) вне этой репы. Из реализуемого в репе сделано:
+
+1. **ADM-17, инфраструктура.** Установлен `openapi-typescript` (^7.13),
+   добавлен скрипт `generate-types` (`openapi.json → src/generated.ts`) в
+   `apps/admin`. Файл `openapi.json` нужно положить копией из бэкенда
+   (`/v3/api-docs`, вариант B из `PLAN_OPENAPI.md`) — до этого скрипт не запускать.
+2. **react-router-dom 6.30.6 → 7.18.4.** Закрыты 2 moderate уязвимости
+   (CVE-2025-68470 bypass, SSR constructor injection). Апгрейд чистый: правок
+   кода не потребовалось (data-router объектный API и `useBlocker` совместимы).
+   `npm audit` теперь **0 уязвимостей**. Проверено: typecheck, 549/549 тестов, build.
+
+Не включено намеренно: флаги `reports`/`purchases`/`dashboard`/`batchTools`
+(без бэкенда BE-5…BE-8 включать нельзя — 404); `mockServiceWorker.js` из prod
+не убирался (открытый вопрос из PROGRESS.md §9); мёртвый `PlaceholderPage` оставлен.

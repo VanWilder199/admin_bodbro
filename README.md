@@ -39,7 +39,15 @@ npm run build      # tsc + vite build
 npm run test       # vitest (549 тестов, 30 файлов)
 ```
 
+## Типы из OpenAPI (ADM-17, инфраструктура)
+
+Скрипт `npm run generate-types -w @podbor/admin` генерит `src/generated.ts`
+из локального `apps/admin/openapi.json` (`openapi-typescript`). Файл
+`openapi.json` кладётся руками копией из бэкенда (`/v3/api-docs`) — см.
+`PLAN_OPENAPI.md` (вариант B). Пока файла нет, скрипт не запускать.
+Ручные типы в `api/types.ts` будут заменены на сгенерированные после первого прогона.
+
 ## Заметки
 
-- 2 moderate vulnerabilities в `npm audit` — предсуществующие, из корня исходника.
+- `npm audit`: **0 уязвимостей** (react-router обновлён до v7.18.4).
 - Node 20 в системе не подходит (engines требует >=22.12) — используй nvm.
