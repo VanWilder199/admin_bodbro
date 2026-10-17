@@ -1,0 +1,15 @@
+/*
+ * Шрифт Onest подключается в entry приложения (так же будет в apps/web и Mini App),
+ * поэтому здесь только Tailwind, токены и источники классов.
+ */
+@import "tailwindcss";
+@import "@podbor/ui/theme.css";
+
+/* Компоненты из packages/ui лежат вне приложения — указываем Tailwind, где искать классы */
+@source "../../../packages/ui/src";
+
+html {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
